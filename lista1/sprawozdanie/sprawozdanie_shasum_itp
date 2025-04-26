@@ -1,0 +1,173 @@
+# Tomasz Niedzialek 279754
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ ./go1/travelers_go > zad1_out1             
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ ./go1/travelers_go > zad1_out2             
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ ./go1/travelers_go > zad1_out3             
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ shasum zad1_out1                           
+34dd4c10d65d9eeaf60b5be3b9993562cdb65c69  zad1_out1                                  
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ shasum zad1_out2                           
+dbe0e82cc5f3e70f7ddd6843527e6712798a6074  zad1_out2                                  
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ shasum zad1_out3                           
+a500e4c5f7767bc478750bb4c4ea7e80fb40a2f7  zad1_out3                                            
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ svn import zad1_out1 https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad1_out1                                 
+Authentication realm: <https://repo.cs.pwr.edu.pl:443> Subversion Repository         
+Password for '279754': *********          
+
+Adding         zad1_out1                  
+Committing transaction...                 
+Committed revision 11.                    
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ svn import zad1_out2 https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad1_out2 -m 'zad1 out2'                  
+Authentication realm: <https://repo.cs.pwr.edu.pl:443> Subversion Repository         
+Password for '279754': *********          
+
+Adding         zad1_out2                  
+Committing transaction...                 
+Committed revision 12.                    
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ svn import zad1_out3 https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad1_out3 -m 'zad1 out3'                  
+Authentication realm: <https://repo.cs.pwr.edu.pl:443> Subversion Repository         
+Password for '279754': *********          
+
+Adding         zad1_out3                  
+Committing transaction...                 
+Committed revision 13.                    
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ ./ada/travelers2 > zad2_out1               
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ ./ada/travelers2 > zad2_out2               
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ ./ada/travelers2 > zad2_out3               
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ shasum zad2_out1                           
+52c27f2223138b15ae6e7ab1e5c4becc4957910c  zad2_out1                                  
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ shasum zad2_out2                           
+4ce46005efb52954c9e145e9896a1f4a5ef9c358  zad2_out2                                  
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ shasum zad2_out3                           
+38b61b8d645414c795b0a0db160c6d856986c950  zad2_out3                                  
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ svn import zad2_out1 https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad2_out1 -m 'zad2 out1'                  
+Authentication realm: <https://repo.cs.pwr.edu.pl:443> Subversion Repository         
+Password for '279754': *********          
+
+Adding         zad2_out1                  
+Committing transaction...                 
+Committed revision 14.                    
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ svn import zad2_out2 https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad2_out2 -m 'zad2 out2'                  
+Authentication realm: <https://repo.cs.pwr.edu.pl:443> Subversion Repository         
+Password for '279754': *********          
+
+Adding         zad2_out2                  
+Committing transaction...                 
+Committed revision 15.                    
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ svn import zad2_out3 https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad2_out3 -m 'zad2 out3'                  
+Authentication realm: <https://repo.cs.pwr.edu.pl:443> Subversion Repository         
+Password for '279754': *********          
+
+Adding         zad2_out3                  
+Committing transaction...                 
+Committed revision 16.                    
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ ./go2/travelers2 > zad3_out1               
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ ./go2/travelers2 > zad3_out2               
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ ./go2/travelers2 > zad3_out3               
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ shasum zad3_out1                           
+7357fec149e524515b309af81bea64c96baf7080  zad3_out1                                  
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ shasum zad3_out2                           
+f2925cc89064eb53ae3d3ba8ef76f48f4462ff75  zad3_out2                                  
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ shasum zad3_out3                           
+415ddf90bffc43615816cfd84e8ba6b94dc40890  zad3_out3                                  
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ svn import zad3_out1 https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad3_out1 -m 'zad3 out1'                  
+Authentication realm: <https://repo.cs.pwr.edu.pl:443> Subversion Repository         
+Password for '279754': *********          
+
+Adding         zad3_out1                  
+Committing transaction...                 
+Committed revision 17.                    
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ svn import zad3_out2 https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad3_out2 -m 'zad3 out2'                  
+Authentication realm: <https://repo.cs.pwr.edu.pl:443> Subversion Repository         
+Password for '279754': *********          
+
+Adding         zad3_out2                  
+Committing transaction...                 
+Committed revision 18.                    
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ svn import zad3_out3 https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad3_out3 -m 'zad3 out3'                  
+Authentication realm: <https://repo.cs.pwr.edu.pl:443> Subversion Repository         
+Password for '279754': *********          
+
+Adding         zad3_out3                  
+Committing transaction...                 
+Committed revision 19.                    
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ ./ada/travelers3 > zad4_out1               
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ ./ada/travelers3 > zad4_out2               
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ ./ada/travelers3 > zad4_out3               
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ shasum zad4_out1                           
+9c1fcc02d1f6a41c7217ce05ed2a46ad6379dac2  zad4_out1                                  
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ shasum zad4_out2                           
+5b540c72a61f8272fd8b555fb8c3c4fec3bc7131  zad4_out2                                  
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ shasum zad4_out3                           
+dcf69251376983d2530bb36b50e3d0c7a7a3dc9c  zad4_out3                                  
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ svn import zad4_out1 https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad4_out1 -m 'zad2 out1'                  
+Authentication realm: <https://repo.cs.pwr.edu.pl:443> Subversion Repository         
+Password for '279754': *********          
+
+svn: E150002: Path 'https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad4_out1' already exists                 
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ svn import zad4_out2 https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad4_out2 -m 'zad2 out2'                  
+Authentication realm: <https://repo.cs.pwr.edu.pl:443> Subversion Repository         
+Password for '279754': *********          
+
+svn: E150002: Path 'https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad4_out2' already exists                 
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ svn import zad4_out3 https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad4_out3 -m 'zad2 out3'                  
+Authentication realm: <https://repo.cs.pwr.edu.pl:443> Subversion Repository         
+Password for '279754': *********          
+
+svn: E150002: Path 'https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad4_out3' already exists                 
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ svn delete https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad4_out1 https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad4_out2 https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad4_out3                    
+Authentication realm: <https://repo.cs.pwr.edu.pl:443> Subversion Repository         
+Password for '279754': *********          
+
+Committing transaction...                 
+Committed revision 24.                    
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ svn import zad4_out1 https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad4_out1 -m 'zad2 out1'                  
+Authentication realm: <https://repo.cs.pwr.edu.pl:443> Subversion Repository         
+Password for '279754': *********          
+
+Adding         zad4_out1                  
+Committing transaction...                 
+Committed revision 25.                    
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ svn import zad4_out2 https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad4_out2 -m 'zad2 out2'                  
+Authentication realm: <https://repo.cs.pwr.edu.pl:443> Subversion Repository         
+Password for '279754': *********          
+
+Adding         zad4_out2                  
+Committing transaction...                 
+Committed revision 26.                    
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ svn import zad4_out3 https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad4_out3 -m 'zad2 out3'                  
+Authentication realm: <https://repo.cs.pwr.edu.pl:443> Subversion Repository         
+Password for '279754': *********          
+
+Adding         zad4_out3                  
+Committing transaction...                 
+Committed revision 27.                    
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ ./go3/travelers3_go > zad5_out1            
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ ./go3/travelers3_go > zad5_out2            
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ ./go3/travelers3_go > zad5_out3            
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ shasum zad5_out1                           
+4c4d9b1ccdbb0568d9e0567ff6d28065e6dfd7be  zad5_out1                                  
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ shasum zad5_out2                           
+947e32f0372f66dfaa9490c6f2c2e4b2f84ee64a  zad5_out2                                  
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ shasum zad5_out3                           
+646c6095877757cbe3c3ef38260a25bb678a110e  zad5_out3                                  
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ svn import zad5_out1 https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad5_out1 -m 'zad5 out1'                  
+Authentication realm: <https://repo.cs.pwr.edu.pl:443> Subversion Repository         
+Password for '279754': *********          
+
+Adding         zad5_out1                  
+Committing transaction...                 
+Committed revision 28.                    
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ svn import zad5_out2 https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad5_out2 -m 'zad5 out2'                  
+Authentication realm: <https://repo.cs.pwr.edu.pl:443> Subversion Repository         
+Password for '279754': *********          
+
+Adding         zad5_out2                  
+Committing transaction...                 
+Committed revision 29.                    
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$ svn import zad5_out3 https://repo.cs.pwr.edu.pl/279754-dir/mz1/pw/lista1/sprawozdanie/zad5_out3 -m 'zad5 out3'                  
+Authentication realm: <https://repo.cs.pwr.edu.pl:443> Subversion Repository         
+Password for '279754': *********          
+
+Adding         zad5_out3                  
+Committing transaction...                 
+Committed revision 30.                    
+trollyuck@TeddyL:~/sem4/pw/mz1/pw/lista1$                                            
