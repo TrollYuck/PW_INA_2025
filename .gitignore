@@ -1,0 +1,33 @@
+# Ignore binary files
+*.exe
+*.dll
+*.so
+*.dylib
+*.o
+*.out
+*.a
+
+# Ignore Ada build artifacts
+*.ali
+*.adb~
+*.ads~
+
+# Ignore Go build artifacts
+*.exe
+*.test
+*.log
+*.prof
+*.mod
+*.sum
+
+# Ignore vendor directory for Go
+/vendor/
+
+# Ignore editor/IDE specific files
+*.swp
+*.swo
+*.bak
+*.tmp
+.idea/
+.vscode/
+.DS_Store
