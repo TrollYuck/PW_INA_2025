@@ -32,6 +32,3 @@
 .vscode/
 .DS_Store
 
-# Ignore files with no extensions
-*
-!*/  # Allow directories
