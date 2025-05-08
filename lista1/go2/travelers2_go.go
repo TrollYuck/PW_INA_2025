@@ -7,276 +7,218 @@ import (
 	"time"
 )
 
-// Travelers moving on the board
-const NrOfTravelers int = 15
-
-var cellLocks [][]sync.Mutex
-
 const (
-	MinSteps int = 10
-	MaxSteps int = 100
+	// Travelers moving on the board
+	NrOfTravelers = 15
+
+	MinSteps = 10
+	MaxSteps = 100
+
+	MinDelay = 10 * time.Millisecond
+	MaxDelay = 50 * time.Millisecond
+
+	// 2D Board with torus topology
+	BoardWidth  = 15
+	BoardHeight = 15
 )
 
-const (
-	MinDelay time.Duration = 10 * time.Millisecond
-	MaxDelay time.Duration = 50 * time.Millisecond
-)
-
-// 2D Board with torus topology
-const (
-	BoardWidth  int = 15
-	BoardHeight int = 15
-)
-
-// Timing
-var StartTime time.Time = time.Now() // global starting time
-
-// Random seeds for the tasks' random number generators
-var seeds [NrOfTravelers]int
-
-func init() {
-	// Seed the random number generator
-	//rand.Seed(time.Now().UnixNano())
-
-	// Generate random seeds for each traveler
-	for i := 0; i < NrOfTravelers; i++ {
-		seeds[i] = rand.Int() // Generate a random integer
-	}
-
-	// Initialize cell locks
-	cellLocks = make([][]sync.Mutex, BoardWidth)
-	for i := range cellLocks {
-		cellLocks[i] = make([]sync.Mutex, BoardHeight)
-	}
+// Position on the board
+type Position struct {
+	X, Y int
 }
 
-// PositionType represents a position on the board
-type PositionType struct {
-	X int // X coordinate, range: 0 to BoardWidth - 1
-	Y int // Y coordinate, range: 0 to BoardHeight - 1
-}
-
-// MoveDown moves the position down on the board (with wrap-around)
-func (p PositionType) MoveDown() PositionType {
-	return PositionType{
-		X: p.X,
-		Y: (p.Y + 1) % BoardHeight,
-	}
-}
-
-// MoveUp moves the position up on the board (with wrap-around)
-func (p PositionType) MoveUp() PositionType {
-	return PositionType{
-		X: p.X,
-		Y: (p.Y + BoardHeight - 1) % BoardHeight,
-	}
-}
-
-// MoveRight moves the position right on the board (with wrap-around)
-func (p PositionType) MoveRight() PositionType {
-	return PositionType{
-		X: (p.X + 1) % BoardWidth,
-		Y: p.Y,
-	}
-}
-
-// MoveLeft moves the position left on the board (with wrap-around)
-func (p PositionType) MoveLeft() PositionType {
-	return PositionType{
-		X: (p.X + BoardWidth - 1) % BoardWidth,
-		Y: p.Y,
-	}
-}
-
-// TraceType represents a trace of a traveler
-type TraceType struct {
-	TimeStamp time.Duration // Time stamp of the trace
-	Id        int           // Traveler ID
-	Position  PositionType  // Position of the traveler
-	Symbol    rune          // Symbol representing the traveler
-}
-
-// TracesSequenceType represents a sequence of traces
-type TracesSequenceType struct {
-	Last       int         // Index of the last trace
-	TraceArray []TraceType // Array of traces
-}
-
-// PrintTrace prints a single trace
-func PrintTrace(trace TraceType) {
-	fmt.Printf("%v %d %d %d %c\n",
-		trace.TimeStamp, trace.Id, trace.Position.X, trace.Position.Y, trace.Symbol)
-}
-
-// PrintTraces prints all traces in a sequence
-func PrintTraces(traces TracesSequenceType) {
-	for i := 0; i <= traces.Last; i++ {
-		PrintTrace(traces.TraceArray[i])
-	}
-}
-
-// Printer collects and prints reports of traces
-type Printer struct {
-	wg      sync.WaitGroup
-	reports chan TracesSequenceType // Channel for trace reports
-}
-
-func NewPrinter() *Printer {
-	return &Printer{
-		reports: make(chan TracesSequenceType, NrOfTravelers),
-	}
-}
-
-func (p *Printer) Start() {
-	go func() {
-		for traces := range p.reports {
-			PrintTraces(traces)
-			p.wg.Done()
-		}
-	}()
-}
-
-// Report sends traces to the Printer's channel
-func (p *Printer) Report(traces TracesSequenceType) {
-	p.reports <- traces
-}
-
-// Stop closes the Printer's channel
-func (p *Printer) Stop() {
-	close(p.reports)
-}
-
-// TravelerTask represents a traveler task
-type TravelerTask struct {
+// Trace of a traveler at one moment
+type Trace struct {
+	TimeStamp time.Duration
 	Id        int
-	Seed      int
+	Position  Position
 	Symbol    rune
-	Position  PositionType
-	Steps     int
-	Traces    TracesSequenceType
-	Generator *rand.Rand
-	Printer   *Printer
 }
 
-// Init initializes the traveler task
-func (t *TravelerTask) Init(id int, seed int, symbol rune) {
-	t.Id = id
-	t.Seed = seed
-	t.Symbol = symbol
-	t.Generator = rand.New(rand.NewSource(int64(seed)))
-	t.Position = PositionType{
-		X: t.Generator.Intn(BoardWidth),
-		Y: t.Generator.Intn(BoardHeight),
-	}
-	t.Traces = TracesSequenceType{
-		Last:       -1,
-		TraceArray: make([]TraceType, MaxSteps),
-	}
-	t.StoreTrace()
-	t.Steps = MinSteps + t.Generator.Intn(MaxSteps-MinSteps)
+// A cell that can be occupied/free and responds to requests
+type Cell struct {
+	request chan chan bool
+	occupy  chan struct{}
+	free    chan struct{}
 }
 
-// StoreTrace stores the current trace
-func (t *TravelerTask) StoreTrace() {
-	if t.Traces.Last+1 >= len(t.Traces.TraceArray) {
-		// Prevent out-of-bounds access by stopping trace storage
-		fmt.Printf("Warning: Trace array full for traveler %d\n", t.Id)
-		return
+func NewCell() *Cell {
+	c := &Cell{
+		request: make(chan chan bool),
+		occupy:  make(chan struct{}),
+		free:    make(chan struct{}),
 	}
+	go c.run()
+	return c
+}
 
-	t.Traces.Last++
-	t.Traces.TraceArray[t.Traces.Last] = TraceType{
-		TimeStamp: time.Since(StartTime),
-		Id:        t.Id,
-		Position:  t.Position,
-		Symbol:    t.Symbol,
+func (c *Cell) run() {
+	occupied := false
+	for {
+		select {
+		case respCh := <-c.request:
+			respCh <- !occupied
+		case <-c.occupy:
+			occupied = true
+		case <-c.free:
+			occupied = false
+		}
 	}
 }
 
-// MakeStep makes a random step
-func (t *TravelerTask) MakeStep() bool {
-	var newPos PositionType
-	switch t.Generator.Intn(4) {
-	case 0:
-		newPos = t.Position.MoveUp()
-	case 1:
-		newPos = t.Position.MoveDown()
-	case 2:
-		newPos = t.Position.MoveLeft()
-	case 3:
-		newPos = t.Position.MoveRight()
-	}
+func (c *Cell) Request() bool {
+	respCh := make(chan bool)
+	c.request <- respCh
+	return <-respCh
+}
 
-	locked := make(chan bool, 1)
-	go func() {
-		cellLocks[newPos.X][newPos.Y].Lock()
-		locked <- true
-	}()
-	select {
-	case <-locked:
-		// Successfully locked the target cell
-		cellLocks[t.Position.X][t.Position.Y].Unlock()
-		t.Position = newPos
-		t.StoreTrace()
-		return true
-	case <-time.After(MaxDelay):
-		// Timeout: deadlock detected
-		t.Symbol = rune(t.Symbol + 32) // Convert symbol to lowercase
-		t.StoreTrace()                 // Store the final trace
-		return false
+func (c *Cell) Occupy() {
+	c.occupy <- struct{}{}
+}
+
+func (c *Cell) Free() {
+	c.free <- struct{}{}
+}
+
+// Message sent from a traveler to printer
+type TracesSequence struct {
+	Id     int
+	Traces []Trace
+}
+
+func printer(ch <-chan TracesSequence, wg *sync.WaitGroup) {
+	defer wg.Done()
+	for i := 0; i < NrOfTravelers; i++ {
+		seq := <-ch
+		for _, t := range seq.Traces {
+			// Format timestamp similarly to Ada's Duration'Image
+			fmt.Printf("%8.6f %2d %2d %2d %c\n",
+				t.TimeStamp.Seconds(), seq.Id, t.Position.X, t.Position.Y, t.Symbol)
+		}
 	}
 }
 
-// Start starts the traveler task
-func (t *TravelerTask) Start() {
-	for i := 0; i < t.Steps; i++ {
-		time.Sleep(MinDelay + time.Duration(t.Generator.Int63n(int64(MaxDelay-MinDelay))))
-		if !t.MakeStep() {
-			// Traveler encountered a deadlock
+func traveler(id int, sym rune, cells [][]*Cell, start time.Time,
+	startCh <-chan struct{}, outCh chan<- TracesSequence, seed int64) {
+
+	// Per-traveler RNG
+	r := rand.New(rand.NewSource(seed))
+
+	// INIT phase
+	var pos Position
+	for {
+		pos = Position{
+			X: r.Intn(BoardWidth),
+			Y: r.Intn(BoardHeight),
+		}
+		if cells[pos.X][pos.Y].Request() {
+			cells[pos.X][pos.Y].Occupy()
+			break
+		}
+		time.Sleep(1 * time.Millisecond)
+	}
+
+	steps := MinSteps + r.Intn(MaxSteps-MinSteps+1)
+
+	// Collect traces
+	traces := make([]Trace, 0, steps+1)
+	record := func(sym rune) {
+		traces = append(traces, Trace{
+			TimeStamp: time.Since(start),
+			Id:        id,
+			Position:  pos,
+			Symbol:    sym,
+		})
+	}
+	record(sym)
+
+	// WAIT for Start signal
+	<-startCh
+
+	// MOVEMENT phase
+	for step := 0; step < steps; step++ {
+		// Delay before move
+		d := MinDelay + time.Duration(r.Float64()*float64(MaxDelay-MinDelay))
+		time.Sleep(d)
+
+		// Choose a direction
+		newPos := pos
+		switch r.Intn(4) {
+		case 0:
+			newPos.Y = (newPos.Y + BoardHeight - 1) % BoardHeight
+		case 1:
+			newPos.Y = (newPos.Y + 1) % BoardHeight
+		case 2:
+			newPos.X = (newPos.X + BoardWidth - 1) % BoardWidth
+		case 3:
+			newPos.X = (newPos.X + 1) % BoardWidth
+		}
+
+		// Try to occupy new cell within MaxDelay
+		startAttempt := time.Now()
+		stuck := false
+		for {
+			if cells[newPos.X][newPos.Y].Request() {
+				// move
+				cells[pos.X][pos.Y].Free()
+				cells[newPos.X][newPos.Y].Occupy()
+				pos = newPos
+				break
+			}
+			if time.Since(startAttempt) > MaxDelay {
+				// stuck: lowercase symbol
+				sym = rune(int(sym) + 32)
+				stuck = true
+				break
+			}
+			time.Sleep(1 * time.Millisecond)
+		}
+
+		record(sym)
+		if stuck {
 			break
 		}
 	}
-	t.Printer.Report(t.Traces)
-	cellLocks[t.Position.X][t.Position.Y].Unlock() // Unlock the final position
+
+	// Report to printer
+	outCh <- TracesSequence{Id: id, Traces: traces}
 }
 
 func main() {
-	// Initialize the mutex grid
-	for i := range cellLocks {
-		for j := range cellLocks[i] {
-			cellLocks[i][j] = sync.Mutex{}
+	// Global start time
+	startTime := time.Now()
+
+	// Initialize board cells
+	cells := make([][]*Cell, BoardWidth)
+	for x := 0; x < BoardWidth; x++ {
+		cells[x] = make([]*Cell, BoardHeight)
+		for y := 0; y < BoardHeight; y++ {
+			cells[x][y] = NewCell()
 		}
 	}
 
-	printer := NewPrinter()
+	// Channel for traveler reports
+	reportCh := make(chan TracesSequence, NrOfTravelers)
+	var wg sync.WaitGroup
 
-	printer.Start()
+	// Start printer
+	wg.Add(1)
+	go printer(reportCh, &wg)
 
-	printer.wg.Add(NrOfTravelers)
+	// Create start signal channel
+	startCh := make(chan struct{})
 
-	travelers := make([]*TravelerTask, NrOfTravelers)
-	symbol := 'A'
-
-	// Initialize travelers
+	// Launch travelers (Init)
 	for i := 0; i < NrOfTravelers; i++ {
-		travelers[i] = &TravelerTask{
-			Printer: printer,
-		}
-		travelers[i].Init(i, seeds[i], symbol)
-		symbol++
-		cellLocks[travelers[i].Position.X][travelers[i].Position.Y].Lock() // Lock initial position
+		go traveler(i, rune('A'+i), cells, startTime, startCh, reportCh, time.Now().UnixNano()+int64(i))
 	}
 
-	// Start travelers
-	for _, traveler := range travelers {
-		go traveler.Start()
-	}
+	// Signal all travelers to start
+	close(startCh)
 
-	// Wait for all travelers to finish
-	printer.wg.Wait()
+	// Wait for printer to finish
+	wg.Wait()
 
-	printer.Stop()
-
-	// Print board parameters for display script
+	// Print board parameters at end
 	fmt.Printf("-1 %d %d %d\n", NrOfTravelers, BoardWidth, BoardHeight)
 }

@@ -9,7 +9,6 @@ procedure  zad1 is
 -- Travelers moving on the board
 
   Nr_Of_Travelers : constant Integer := 15;
-  Max_Travelers : Integer := Nr_Of_Travelers;
 
   Min_Steps : constant Integer := 10 ;
   Max_Steps : constant Integer := 100 ;
@@ -80,6 +79,17 @@ procedure  zad1 is
     Trace_Array: Trace_Array_type ;
   end record; 
 
+   protected Traveler_Counter is
+      procedure Increment;
+      function  Value return Integer;
+   private
+      Count : Integer := Nr_Of_Travelers;
+   end Traveler_Counter;
+
+   protected body Traveler_Counter is
+      procedure Increment is begin Count := Count + 1; end Increment;
+      function Value return Integer is begin return Count; end Value;
+   end Traveler_Counter;
 
  -- Printer Task
    task Printer is
@@ -112,7 +122,7 @@ procedure  zad1 is
          if Reports_Received = Nr_Of_Travelers then
             Wild_Manager.Stop;  -- signal wild manager to halt
          end if;
-         exit when Reports_Received = Max_Travelers;
+         exit when Reports_Received = Traveler_Counter.Value;
       end loop;
    end Printer;
 
@@ -157,6 +167,10 @@ procedure  zad1 is
          or
             accept Change_Wild_State (State: in Wild_State) do
                W_state := State;
+               if W_state = Moved_Out or W_state = Stayed_In then
+                  Wild    := False;
+                  Waiting := False;
+               end if;
             end Change_Wild_State;
          or
             accept Check_Wild_State (State: out Wild_State) do
@@ -421,7 +435,7 @@ begin
       begin
             WT := new Wild_Traveler_Task;
             WT.Init(Next_Wild_Id, Seed, Next_Symbol, Lifespan);
-            Max_Travelers := Max_Travelers + 1;
+            Traveler_Counter.Increment;
             Next_Wild_Id := Next_Wild_Id + 1;
             if Next_Symbol = '9' then
                Next_Symbol := '0';
