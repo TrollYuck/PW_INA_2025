@@ -49,14 +49,14 @@ General rule: keep events truly concurrent; do **not** add artificial global loc
 
 ### Lista 3 — **Classical Mutual-Exclusion Algorithms**  
 
-| Task | Algorithm | Language | Extra requirement |
-|------|-----------|----------|-------------------|
-| 1 | Lamport’s **Bakery** | Ada | Show `MAX_TICKET`|
-| 2 | Bakery | Go | — |
-| 3 | **Dekker** | Ada | Works with `Nr_Of_Processes = 2`. |
-| 4 | Dekker | Go | — |
-| 5 | **Peterson** | Ada | Again `Nr_Of_Processes = 2`. |
-| 6 | Peterson | Go | — |
+| Task | Algorithm | Language | 
+|------|-----------|----------|
+| 1 | Lamport’s **Bakery** | Ada | 
+| 2 | Bakery | Go | 
+| 3 | **Dekker** | Ada | 
+| 4 | Dekker | Go | 
+| 5 | **Peterson** | Ada | 
+| 6 | Peterson | Go | 
 
 ---
 
