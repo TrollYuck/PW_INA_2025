@@ -69,5 +69,5 @@ cd PW_INA_2025/lista1       # or lista2 / lista3
 gnatmake travelers.adb
 ./travelers > out
 # visualise
-bash lista2/distrav.bash (for lista1 and lista2)
-bash lista3/display.bash (for lista3)
+bash lista2/distrav out (for lista1 and lista2)
+bash lista3/display out (for lista3)
